@@ -1,0 +1,150 @@
+/* ==========================================================================
+   Getta Coffee - Design Tokens
+   Ported from the Claude Design project "Getta Coffee ordering platform"
+   (Getta Design Tokens.dc.html). Shared by the login page and the admin console.
+
+   NOTE ON BOX SIZING: the source design relies on the default content-box model
+   for layout blocks (e.g. the 232px sidebar has 22px/14px padding ON TOP of its
+   width). A global `* { box-sizing: border-box }` would silently shrink those
+   blocks, so border-box is applied only where the design applies it: inputs.
+   ========================================================================== */
+
+:root {
+  /* --- Brand ------------------------------------------------------------ */
+  --maroon:        #7A2418;  /* primary, nav fills, awning        */
+  --maroon-mid:    #93331F;  /* banner gradient stop              */
+  --maroon-press:  #4E150C;  /* 3D press shadow under maroon CTAs */
+  --orange:        #EE7623;  /* CTAs, bolt motif, progress        */
+  --orange-press:  #B55412;  /* 3D press shadow under orange CTAs */
+  --orange-text:   #C2570F;  /* AA-safe orange for SMALL text     */
+
+  /* --- Surfaces --------------------------------------------------------- */
+  --page:          #F2EBDA;  /* outermost page background         */
+  --cream:         #F7F1DC;  /* surfaces, text on maroon          */
+  --offwhite:      #FDF9F0;  /* app background, inset panels      */
+  --white:         #FFFFFF;
+  --row-selected:  #FBF3E4;  /* highlighted table row             */
+
+  /* --- Text ------------------------------------------------------------- */
+  --dark:          #2B1510;  /* body text, footers                */
+  --body:          #5C4436;  /* secondary body copy               */
+  --muted:         #8A6A55;  /* meta, helper text                 */
+  --faint:         #B9A48C;  /* de-emphasised meta                */
+  --on-maroon:     #C79383;  /* inactive nav label on maroon      */
+  --on-maroon-dim: #D9A893;  /* caption on maroon                 */
+  --tan:           #E8B77E;  /* overline on maroon                */
+
+  /* --- Lines & fills ---------------------------------------------------- */
+  --line:          #EBDDBE;  /* input borders                     */
+  --line-soft:     #F8F2E2;  /* table row dividers                */
+  --line-mid:      #F1E6CE;  /* card hairlines, inset rings       */
+  --line-cream:    #F4EDDC;  /* chart gridlines                   */
+  --sand:          #F0E4C6;  /* track fills                       */
+  --sand-dark:     #D8C8A8;  /* toggle off, dashed borders        */
+  --rail:          #EFE3C8;  /* progress rail, pending step dot   */
+
+  /* --- Status ----------------------------------------------------------- */
+  --success:       #3E7C4F;  /* order ready, applied, toggle on   */
+  --success-bg:    #E9F2EB;
+  --success-text:  #2A5637;
+  --warning:       #E0A526;  /* preparing, gold tier              */
+  --warning-bg:    #FCF3D6;
+  --warning-text:  #8A6A10;
+  --danger:        #C0392B;  /* swipe-delete, errors              */
+  --peach:         #FBE3CE;  /* new / easy-goer chip, notices     */
+  --peach-text:    #8C3D0A;
+  --neutral-bg:    #F0EADB;  /* completed / new-bolt chip         */
+
+  /* --- Type ------------------------------------------------------------- */
+  --font-display: 'Baloo 2', sans-serif;  /* chunky, rounded - signage echo */
+  --font-body:    'Outfit', sans-serif;   /* geometric sans - read fast     */
+
+  /* --- Radii ------------------------------------------------------------ */
+  --r-input: 10px;
+  --r-card:  16px;
+  --r-tile:  20px;
+  --r-pill:  999px;
+
+  /* --- Shadows ---------------------------------------------------------- */
+  --sh-card:  0 2px 10px rgba(122, 36, 24, .06);  /* card - soft   */
+  --sh-panel: 0 6px 24px rgba(122, 36, 24, .14);  /* panel - float */
+  --sh-frame: 0 24px 50px rgba(43, 21, 16, .22);  /* app frame     */
+
+  /* --- Motion ----------------------------------------------------------- */
+  --t-quick:    150ms;                            /* chips, toggles, hovers */
+  --t-standard: 280ms;                            /* screen slides, cards   */
+  --ease-standard: cubic-bezier(.3, .8, .3, 1);
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--page);
+  color: var(--dark);
+}
+
+a {
+  color: var(--maroon);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+a:hover {
+  color: var(--orange);
+}
+
+input,
+select,
+button {
+  font-family: var(--font-body);
+}
+
+input {
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   Keyframes - copied from the design source
+   ========================================================================== */
+
+/* live-order feed: new row drops in with a peach flash that settles to white */
+@keyframes feedIn {
+  0%   { opacity: 0; transform: translateY(-14px); background: var(--peach); }
+  60%  { background: var(--peach); }
+  100% { opacity: 1; transform: none; background: var(--white); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* section entrance when switching admin views */
+@keyframes secIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* side panel slides in from the right */
+@keyframes panelIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* the bolt always strikes top-right -> bottom-left. Never rotate the G-mug. */
+@keyframes demoBolt {
+  0%   { opacity: 0; transform: translate(20px, -32px) rotate(16deg); }
+  60%  { opacity: 1; transform: translate(-2px, 3px); }
+  100% { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
