@@ -7,37 +7,16 @@
    Layout blocks stay content-box on purpose - see the note in tokens.css.
    ========================================================================== */
 
+/* FULL-BLEED: the design presents the console as a floating 1440px card on a
+   cream page. Kiyo asked for it to run edge to edge like a deployed app, so the
+   card chrome (max-width, margin, radius, shadow, header link row) is dropped
+   and the frame owns the whole viewport. The console's internals are untouched.
+   This is a deliberate deviation from the mockup - do not "fix" it back. */
+
 .admin {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-}
-
-/* ==========================================================================
-   Header link row (above the frame)
-   ========================================================================== */
-
-.admin__header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  justify-content: center;
-  padding: 14px 0 0;
-  flex-wrap: wrap;
-}
-
-.admin__header-brand {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 16px;
-  color: var(--maroon);
-  letter-spacing: 1px;
-}
-
-.admin__header-links {
-  display: flex;
-  gap: 14px;
-  font-size: 13px;
 }
 
 /* ==========================================================================
@@ -45,15 +24,12 @@
    ========================================================================== */
 
 .admin__frame {
-  width: 1440px;
-  max-width: calc(100vw - 32px);
-  margin: 14px auto 40px;
+  flex: 1;
+  min-height: 0;              /* lets the content area own the scrolling */
+  width: 100%;
   background: var(--offwhite);
-  border-radius: var(--r-tile);
   overflow: hidden;
-  box-shadow: var(--sh-frame);
   display: flex;
-  min-height: 860px;
 }
 
 /* ==========================================================================
