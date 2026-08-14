@@ -1477,3 +1477,102 @@
   padding: 12px;
   font-size: 13.5px;
 }
+
+/* ==========================================================================
+   View 7 - Outlets
+   ========================================================================== */
+
+.outlets-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.outlet-card {
+  background: var(--white);
+  border-radius: 18px;
+  box-shadow: var(--sh-card);
+  padding: 18px 20px;
+}
+
+.outlet-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.outlet-card__name {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--maroon);
+}
+
+.outlet-card__addr {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.outlet-badge {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  padding: 5px 11px;
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+}
+
+.outlet-badge--flagship { background: var(--peach);      color: var(--peach-text); }
+.outlet-badge--open     { background: var(--success-bg); color: var(--success-text); }
+.outlet-badge--off      { background: var(--neutral-bg); color: var(--muted); }
+
+.outlet-card__facts {
+  display: flex;
+  gap: 18px;
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--body);
+}
+
+.outlet-card__fact-label {
+  font-weight: 800;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: .5px;
+}
+
+.outlet-card__hours {
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.outlet-card__zones {
+  display: flex;
+  gap: 5px;
+  margin-top: 3px;
+  flex-wrap: wrap;
+}
+
+.zone-pill {
+  background: var(--cream);
+  border-radius: var(--r-pill);
+  padding: 3px 10px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--maroon);
+}
+
+.outlet-card__foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1.5px solid var(--line-soft);
+}
+
+.outlet-card__foot-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--body);
+}

@@ -759,6 +759,68 @@ var APP = (function (D) {
 }(APP));
 
 /* ==========================================================================
+   View 7 - Outlets
+   ========================================================================== */
+
+(function (A) {
+  'use strict';
+
+  var D = A.D;
+
+  A.VIEWS.outlets = function (s, host) {
+    host.innerHTML =
+      '<div class="outlets-grid">' +
+        D.OUTLETS.map(function (o, i) {
+          /* flagship wins the badge outright; otherwise it reports pickup state */
+          var badge = o.flagship ? 'FLAGSHIP' : (s.outletPk[i] ? 'OPEN' : 'PICKUP OFF');
+          var mod   = o.flagship ? 'flagship' : (s.outletPk[i] ? 'open' : 'off');
+
+          return '<div class="outlet-card">' +
+                   '<div class="outlet-card__head">' +
+                     '<div>' +
+                       '<div class="outlet-card__name">' + A.esc(o.n) + '</div>' +
+                       '<div class="outlet-card__addr">' + A.esc(o.addr) + '</div>' +
+                     '</div>' +
+                     '<div class="outlet-badge outlet-badge--' + mod + '">' + badge + '</div>' +
+                   '</div>' +
+
+                   '<div class="outlet-card__facts">' +
+                     '<div>' +
+                       '<div class="outlet-card__fact-label">HOURS</div>' +
+                       '<div class="outlet-card__hours">' + A.esc(o.hours) + '</div>' +
+                     '</div>' +
+                     '<div>' +
+                       '<div class="outlet-card__fact-label">DELIVERY ZONES</div>' +
+                       '<div class="outlet-card__zones">' +
+                         o.zones.map(function (z) {
+                           return '<div class="zone-pill">' + A.esc(z) + '</div>';
+                         }).join('') +
+                       '</div>' +
+                     '</div>' +
+                   '</div>' +
+
+                   '<div class="outlet-card__foot">' +
+                     '<div class="outlet-card__foot-label">Pickup orders</div>' +
+                     '<div class="toggle' + (s.outletPk[i] ? ' toggle--on' : '') + '" data-outlet="' + i + '">' +
+                       '<div class="toggle__knob"></div>' +
+                     '</div>' +
+                   '</div>' +
+                 '</div>';
+        }).join('') +
+      '</div>';
+
+    A.bindOnce(host, 'click', function (e) {
+      var t = e.target.closest('[data-outlet]');
+      if (!t) { return; }
+      var a = A.state.outletPk.slice();
+      var i = +t.dataset.outlet;
+      a[i] = !a[i];
+      A.setState({ outletPk: a });
+    });
+  };
+}(APP));
+
+/* ==========================================================================
    Views are appended below this line, one section per sidebar entry.
    ========================================================================== */
 
