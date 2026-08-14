@@ -678,6 +678,87 @@ var APP = (function (D) {
 }(APP));
 
 /* ==========================================================================
+   View 6 - Rewards Engine
+   ========================================================================== */
+
+(function (A) {
+  'use strict';
+
+  var DAY_VALUES = [1, 1, 1, 3, 1, 1, 21];
+
+  A.VIEWS.rewards = function (s, host) {
+    host.innerHTML =
+      '<div class="rewards-layout">' +
+
+        '<div class="reward-card">' +
+          '<div class="card__title">Earning rules</div>' +
+
+          '<div class="inset-row" style="margin-top:12px">' +
+            '<div class="inset-row__label">Points per RM 1 spent</div>' +
+            '<div class="stepper">' +
+              '<button class="stepper__btn stepper__btn--down" data-earn="-1">&minus;</button>' +
+              '<div class="stepper__value">' + s.earnRate + '</div>' +
+              '<button class="stepper__btn stepper__btn--up" data-earn="1">+</button>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="subhead">Daily check-in values</div>' +
+          '<div class="days">' +
+            DAY_VALUES.map(function (v, i) {
+              return '<div class="days__col">' +
+                       '<div class="days__tile' + (v > 1 ? ' days__tile--bonus' : '') + '">' + v + '</div>' +
+                       '<div class="days__label">Day ' + (i + 1) + '</div>' +
+                     '</div>';
+            }).join('') +
+          '</div>' +
+
+          '<div class="subhead">Cup streak</div>' +
+          '<div class="inset-row" style="margin-top:8px">' +
+            '<div class="inset-row__label">Free drink after</div>' +
+            '<div class="inset-row__value">10 cups</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="rewards-col">' +
+
+          '<div class="reward-card">' +
+            '<div class="card-head">' +
+              '<div class="card__title">Missions</div>' +
+              '<button class="btn-ghost">+ New mission</button>' +
+            '</div>' +
+            '<div class="missions">' +
+              '<div class="mission"><div class="mission__name">Order 3 Signature drinks</div><div class="mission__pts">+50 pts &middot; LIVE</div></div>' +
+              '<div class="mission"><div class="mission__name">Try anything Matcha</div><div class="mission__pts">+20 pts &middot; LIVE</div></div>' +
+              '<div class="mission"><div class="mission__name">Bring your own tumbler</div><div class="mission__pts mission__pts--draft">+30 pts &middot; DRAFT</div></div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="reward-card">' +
+            '<div class="card__title">Voucher creator</div>' +
+            '<div class="voucher-fields">' +
+              '<div><div class="field-label">VALUE</div><input class="field-input field-input--sm" value="RM 3 off" readonly></div>' +
+              '<div><div class="field-label">COST</div><input class="field-input field-input--sm" value="240 pts" readonly></div>' +
+              '<div><div class="field-label">MIN SPEND</div><input class="field-input field-input--sm" value="RM 15" readonly></div>' +
+            '</div>' +
+            '<button class="btn-orange-wide btn-orange-wide--tight">Create voucher</button>' +
+          '</div>' +
+
+        '</div>' +
+      '</div>';
+
+    A.bindOnce(host, 'click', function (e) {
+      var b = e.target.closest('[data-earn]');
+      if (!b) { return; }
+      var delta = +b.dataset.earn;
+      /* the design clamps the rate between 1 and 5 */
+      A.setState(function (st) {
+        return { earnRate: delta > 0 ? Math.min(5, st.earnRate + 1) : Math.max(1, st.earnRate - 1) };
+      });
+    });
+  };
+}(APP));
+
+/* ==========================================================================
    Views are appended below this line, one section per sidebar entry.
    ========================================================================== */
 
