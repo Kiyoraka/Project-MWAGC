@@ -821,6 +821,95 @@ var APP = (function (D) {
 }(APP));
 
 /* ==========================================================================
+   View 8 - Customers
+   ========================================================================== */
+
+(function (A) {
+  'use strict';
+
+  var D = A.D;
+
+  var TIER = {
+    'Gold Bolt': 'tier--gold',
+    'Easy Goer': 'tier--easy',
+    'New Bolt':  'tier--new'
+  };
+
+  A.VIEWS.customers = function (s, host) {
+    var open = s.selCust >= 0;
+    var sel  = D.CUST[Math.max(0, s.selCust)];
+
+    host.innerHTML =
+      '<div class="split-layout">' +
+
+        '<div class="split-layout__main">' +
+          '<div class="table-head customers-grid">' +
+            '<div>CUSTOMER</div><div>TIER</div><div>POINTS</div><div>WALLET</div><div>ORDERS</div>' +
+          '</div>' +
+          D.CUST.map(function (c, i) {
+            return '<div class="cust-row' + (s.selCust === i ? ' cust-row--selected' : '') + '" data-i="' + i + '">' +
+                     '<div class="cust-row__who">' +
+                       '<div class="cust-avatar">' + A.esc(A.initials(c.n)) + '</div>' +
+                       '<div>' +
+                         '<div class="cust-row__name">' + A.esc(c.n) + '</div>' +
+                         '<div class="cust-row__email">' + A.esc(c.email) + '</div>' +
+                       '</div>' +
+                     '</div>' +
+                     '<div><span class="tier ' + TIER[c.tier] + '">' + A.esc(c.tier) + '</span></div>' +
+                     '<div class="cust-row__pts">' + c.pts + '</div>' +
+                     '<div class="cust-row__num">' + A.esc(c.wal) + '</div>' +
+                     '<div class="cust-row__num">' + c.ord + '</div>' +
+                   '</div>';
+          }).join('') +
+        '</div>' +
+
+        (open ?
+        '<div class="panel panel--cust">' +
+          '<div class="card-head">' +
+            '<div class="cust-panel__head">' +
+              '<div class="cust-avatar cust-avatar--lg">' + A.esc(A.initials(sel.n)) + '</div>' +
+              '<div>' +
+                '<div class="cust-panel__name">' + A.esc(sel.n) + '</div>' +
+                '<div class="cust-row__email">' + A.esc(sel.email) + '</div>' +
+              '</div>' +
+            '</div>' +
+            '<button class="panel__close" data-close="1">&#10005;</button>' +
+          '</div>' +
+
+          '<div class="cust-stats">' +
+            '<div class="cust-stat"><div class="cust-stat__label">POINTS</div><div class="cust-stat__value">' + sel.pts + '</div></div>' +
+            '<div class="cust-stat"><div class="cust-stat__label">WALLET</div><div class="cust-stat__value">' + A.esc(sel.wal) + '</div></div>' +
+            '<div class="cust-stat"><div class="cust-stat__label">STREAK</div><div class="cust-stat__value">' + A.esc(sel.streak) + '</div></div>' +
+          '</div>' +
+
+          '<div class="cust-section">RECENT ORDERS</div>' +
+          '<div class="cust-hist">' +
+            sel.hist.map(function (h) {
+              return '<div class="cust-hist__row">' +
+                       '<div>' +
+                         '<div class="cust-hist__name">' + A.esc(h.n) + '</div>' +
+                         '<div class="cust-hist__date">' + A.esc(h.d) + '</div>' +
+                       '</div>' +
+                       '<div class="cust-hist__price">' + A.esc(h.p) + '</div>' +
+                     '</div>';
+            }).join('') +
+          '</div>' +
+        '</div>' : '') +
+
+      '</div>';
+
+    A.bindOnce(host, 'click', function (e) {
+      if (e.target.closest('[data-close]')) {
+        A.setState({ selCust: -1 });
+        return;
+      }
+      var row = e.target.closest('.cust-row');
+      if (row) { A.setState({ selCust: +row.dataset.i }); }
+    });
+  };
+}(APP));
+
+/* ==========================================================================
    Views are appended below this line, one section per sidebar entry.
    ========================================================================== */
 
