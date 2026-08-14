@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in - Getta Coffee HQ Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/login.css">
+</head>
+<body class="login-body">
+
+<div class="login">
+
+  <!-- ── Left: brand panel ─────────────────────────────────────────────── -->
+  <div class="login__brand">
+
+    <!-- oversized bolt watermark, struck top-right to bottom-left -->
+    <svg class="login__watermark" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M13 2 3 14h6l-2 8 10-12h-6l2-8z" fill="#F7F1DC"></path>
+    </svg>
+
+    <div class="login__brand-inner">
+      <div class="login__mark">
+        <!-- G-mug: cup silhouette with the bolt cut through it -->
+        <svg width="76" height="76" viewBox="0 0 140 140" aria-hidden="true">
+          <rect width="140" height="140" rx="30" fill="#7A2418"></rect>
+          <path d="M70 24 C45 24 26 43 26 68 c0 25 19 44 44 44 h27 c4 0 7-3 7-7 V84 c7-2 11-8 11-15 0-9-7-16-16-16h-3 C92 37 82 24 70 24z" fill="#F7F1DC"></path>
+          <circle cx="99" cy="68" r="7" fill="#7A2418"></circle>
+          <path d="M76 34 58 66h13l-6 36 26-42H78l8-26z" fill="#7A2418"></path>
+        </svg>
+      </div>
+
+      <div class="login__wordmark">GETTA<br>COFFEE</div>
+      <div class="login__overline">HQ CONSOLE</div>
+
+      <div class="login__tagline">Charge up your day.</div>
+      <div class="login__blurb">
+        One console for orders, menu, rewards and every outlet on the map.
+      </div>
+    </div>
+
+    <div class="login__deploy">
+      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M13 2 3 14h6l-2 8 10-12h-6l2-8z" fill="#EE7623"></path>
+      </svg>
+      <div>Deployed on DigitalOcean<br>App Platform &middot; v2.4.1</div>
+    </div>
+  </div>
+
+  <!-- ── Right: sign-in card ───────────────────────────────────────────── -->
+  <div class="login__panel">
+    <form class="login__card" id="login-form" novalidate>
+
+      <div class="login__title">Welcome back</div>
+      <div class="login__subtitle">Sign in to the Getta Coffee HQ console.</div>
+
+      <label class="login__label" for="email">EMAIL</label>
+      <input class="login__input" id="email" name="email" type="email"
+             autocomplete="username" placeholder="you@gettacoffee.my">
+
+      <label class="login__label" for="password">PASSWORD</label>
+      <div class="login__field">
+        <input class="login__input" id="password" name="password" type="password"
+               autocomplete="current-password" placeholder="Your password">
+        <button class="login__reveal" id="reveal" type="button" aria-label="Show password">Show</button>
+      </div>
+
+      <div class="login__error" id="error" role="alert" hidden></div>
+
+      <div class="login__row">
+        <label class="login__remember">
+          <input type="checkbox" id="remember" checked>
+          <span>Keep me signed in</span>
+        </label>
+        <a class="login__forgot" href="#">Forgot password?</a>
+      </div>
+
+      <button class="login__cta" type="submit">Sign in</button>
+
+      <div class="login__note">
+        Hardcoded demo &mdash; any email and password will sign you in.
+      </div>
+    </form>
+  </div>
+
+</div>
+
+<script src="assets/js/login.js"></script>
+</body>
+</html>
