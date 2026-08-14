@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getta Coffee - HQ Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+
+<div class="admin">
+
+  <!-- ── Header link row (kept from the design; targets are inert here) ──── -->
+  <div class="admin__header">
+    <div class="admin__header-brand">GETTA COFFEE &middot; ADMIN</div>
+    <div class="admin__header-links">
+      <a href="#">Customer PWA &rarr;</a>
+      <a href="#">Design tokens &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ── App frame ───────────────────────────────────────────────────────── -->
+  <div class="admin__frame">
+
+    <!-- ── Sidebar ─────────────────────────────────────────────────────── -->
+    <div class="sidebar">
+
+      <div class="sidebar__logo">
+        <svg width="38" height="38" viewBox="0 0 140 140" aria-hidden="true">
+          <path d="M70 14 C39 14 16 37 16 68 c0 31 23 54 54 54 h34 c5 0 9-4 9-9 V88 c8-2 14-10 14-19 0-11-9-20-20-20h-4 C97 30 85 14 70 14z" fill="#F7F1DC"></path>
+          <circle cx="107" cy="69" r="9" fill="#7A2418"></circle>
+          <path d="M78 26 56 66h16l-8 44 32-52H78l10-32z" fill="#7A2418"></path>
+        </svg>
+        <div>
+          <div class="sidebar__wordmark">GETTA<br>COFFEE</div>
+          <div class="sidebar__overline">HQ CONSOLE</div>
+        </div>
+      </div>
+
+      <!-- nav items rendered by admin.js from GETTA.NAV -->
+      <div class="sidebar__nav" id="nav"></div>
+
+      <div class="sidebar__deploy">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13 2 3 14h6l-2 8 10-12h-6l2-8z" fill="#EE7623"></path>
+        </svg>
+        <div>Deployed on DigitalOcean<br>App Platform &middot; v2.4.1</div>
+      </div>
+    </div>
+
+    <!-- ── Main column ─────────────────────────────────────────────────── -->
+    <div class="main">
+
+      <div class="topbar">
+        <div class="topbar__title" id="view-title">Dashboard</div>
+
+        <div class="topbar__outlets">
+          <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2a8 8 0 0 0-8 8c0 6 8 12 8 12s8-6 8-12a8 8 0 0 0-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" fill="#EE7623"></path>
+          </svg>
+          All outlets
+          <svg width="11" height="11" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 10l5 5 5-5z" fill="#7A2418"></path>
+          </svg>
+        </div>
+
+        <!-- clicking the user block signs out - no extra UI, design untouched -->
+        <div class="topbar__user" id="signout" title="Sign out">
+          <div class="topbar__avatar">NH</div>
+          <div>
+            <div class="topbar__name">Nurul Huda</div>
+            <div class="topbar__role">Ops Manager</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="view" id="view-dash"></div>
+        <div class="view" id="view-orders" hidden></div>
+        <div class="view" id="view-products" hidden></div>
+        <div class="view" id="view-cats" hidden></div>
+        <div class="view" id="view-banners" hidden></div>
+        <div class="view" id="view-rewards" hidden></div>
+        <div class="view" id="view-outlets" hidden></div>
+        <div class="view" id="view-customers" hidden></div>
+        <div class="view" id="view-settings" hidden></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/admin.js"></script>
+</body>
+</html>
