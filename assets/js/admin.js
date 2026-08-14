@@ -615,6 +615,69 @@ var APP = (function (D) {
 }(APP));
 
 /* ==========================================================================
+   View 5 - Banners & Promos
+   ========================================================================== */
+
+(function (A) {
+  'use strict';
+
+  var D = A.D;
+  var BOLT = 'M13 2 3 14h6l-2 8 10-12h-6l2-8z';
+
+  A.VIEWS.banners = function (s, host) {
+    host.innerHTML =
+      '<div class="banners-layout">' +
+
+        '<div class="banners-col">' +
+          D.BANS.map(function (b, i) {
+            return '<div class="banner-card">' +
+                     '<div class="banner-card__preview" style="background:' + b.bg + '">' +
+                       '<svg class="banner-card__bolt" width="44" height="44" viewBox="0 0 24 24"><path d="' + BOLT + '" fill="#fff"></path></svg>' +
+                       '<div class="banner-card__preview-title" style="color:' + b.fg + '">' + A.esc(b.t) + '</div>' +
+                     '</div>' +
+                     '<div class="banner-card__body">' +
+                       '<div class="banner-card__title">' + A.esc(b.t) + '</div>' +
+                       '<div class="banner-card__meta">Schedule: <b>' + A.esc(b.win) + '</b></div>' +
+                       '<div class="banner-card__stats">Position ' + (i + 1) + ' of 3 &middot; ' + b.taps + ' taps this week</div>' +
+                     '</div>' +
+                     '<div class="toggle' + (s.banOn[i] ? ' toggle--on' : '') + '" data-ban="' + i + '">' +
+                       '<div class="toggle__knob"></div>' +
+                     '</div>' +
+                   '</div>';
+          }).join('') +
+          '<button class="banner-add">+ Schedule new banner</button>' +
+        '</div>' +
+
+        '<div class="promo">' +
+          '<div class="card__title">Promo-code announcement bar</div>' +
+          '<div class="card__subtitle">Shows at the top of the PWA menu.</div>' +
+
+          '<div class="promo__section">MESSAGE</div>' +
+          '<input class="field-input promo__input" value="RM3 OFF first pickup order &middot; Code: GETTABOLT10" readonly>' +
+
+          '<div class="promo__section">LIVE PREVIEW</div>' +
+          '<div class="promo__preview">' +
+            '<svg width="14" height="14" viewBox="0 0 24 24"><path d="' + BOLT + '" fill="#C2570F"></path></svg>' +
+            '<div class="promo__preview-text">RM3 OFF first pickup order &middot; Code: <b>GETTABOLT10</b></div>' +
+          '</div>' +
+
+          '<button class="btn-maroon-wide">Publish bar</button>' +
+        '</div>' +
+
+      '</div>';
+
+    A.bindOnce(host, 'click', function (e) {
+      var t = e.target.closest('[data-ban]');
+      if (!t) { return; }
+      var a = A.state.banOn.slice();
+      var i = +t.dataset.ban;
+      a[i] = !a[i];
+      A.setState({ banOn: a });
+    });
+  };
+}(APP));
+
+/* ==========================================================================
    Views are appended below this line, one section per sidebar entry.
    ========================================================================== */
 
