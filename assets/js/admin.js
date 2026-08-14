@@ -67,6 +67,14 @@ var APP = (function (D) {
 
   function el(id) { return document.getElementById(id); }
 
+  /* View hosts survive re-renders, so a listener attached on every render would
+     stack up and fire N times. Bind delegated handlers through this instead. */
+  function bindOnce(host, type, fn) {
+    if (host.dataset.bound === '1') { return; }
+    host.dataset.bound = '1';
+    host.addEventListener(type, fn);
+  }
+
   /* --- state plumbing ----------------------------------------------------- */
 
   function setState(patch) {
@@ -159,6 +167,7 @@ var APP = (function (D) {
     assign: assign,
     esc: esc,
     initials: initials,
+    bindOnce: bindOnce,
     boot: boot,
     D: D
   };
@@ -299,6 +308,119 @@ var APP = (function (D) {
       if (!b) { return; }
       A.setState({ range: +b.dataset.r, chartOn: false });
       A.later(function () { A.setState({ chartOn: true }); }, 60);
+    });
+  };
+}(APP));
+
+/* ==========================================================================
+   View 2 - Orders
+   ========================================================================== */
+
+(function (A) {
+  'use strict';
+
+  var D = A.D;
+  var SEQ = ['New', 'Preparing', 'Ready', 'Completed'];
+
+  var CHIP = {
+    New:       'chip--new',
+    Preparing: 'chip--preparing',
+    Ready:     'chip--ready',
+    Completed: 'chip--completed'
+  };
+
+  /* dot state: pending / current / passed, driven by the 1-based step number */
+  function dot(step, n) {
+    if (step > n) { return 'rail__dot rail__dot--passed'; }
+    if (step === n) { return 'rail__dot rail__dot--current'; }
+    return 'rail__dot';
+  }
+
+  function bar(step, n) {
+    return 'rail__fill' + (step > n ? ' rail__fill--full' : '');
+  }
+
+  A.VIEWS.orders = function (s, host) {
+    var open   = s.selOrder >= 0;
+    var selO   = D.ORDERS[Math.max(0, s.selOrder)];
+    var status = open ? s.statuses[s.selOrder] : 'New';
+    var step   = SEQ.indexOf(status) + 1;
+    var done   = status === 'Completed';
+
+    host.innerHTML =
+      '<div class="split-layout">' +
+
+        '<div class="split-layout__main">' +
+          '<div class="table-head orders-grid">' +
+            '<div>ORDER</div><div>CUSTOMER</div><div>ITEMS</div>' +
+            '<div>TOTAL</div><div>TYPE</div><div>STATUS</div>' +
+          '</div>' +
+          D.ORDERS.map(function (o, i) {
+            var st = s.statuses[i];
+            return '<div class="order-row' + (s.selOrder === i ? ' order-row--selected' : '') + '" data-i="' + i + '">' +
+                     '<div class="order-row__id">' + A.esc(o.id) + '</div>' +
+                     '<div class="order-row__who">' + A.esc(o.who) + '</div>' +
+                     '<div class="order-row__items">' + A.esc(o.items) + '</div>' +
+                     '<div class="order-row__amt">' + A.esc(o.amt) + '</div>' +
+                     '<div class="order-row__type">' + A.esc(o.type) + '</div>' +
+                     '<div><span class="chip ' + CHIP[st] + '">' + A.esc(st) + '</span></div>' +
+                   '</div>';
+          }).join('') +
+        '</div>' +
+
+        (open ?
+        '<div class="panel panel--order">' +
+          '<div class="card-head">' +
+            '<div class="panel__id">' + A.esc(selO.id) + '</div>' +
+            '<button class="panel__close" data-close="1">&#10005;</button>' +
+          '</div>' +
+          '<div class="panel__meta">' + A.esc(selO.who) + ' &middot; ' + A.esc(selO.type) + ' &middot; 9:32 AM</div>' +
+
+          '<div class="rail">' +
+            '<div class="' + dot(step, 1) + '"></div>' +
+            '<div class="rail__bar"><div class="' + bar(step, 1) + '"></div></div>' +
+            '<div class="' + dot(step, 2) + '"></div>' +
+            '<div class="rail__bar"><div class="' + bar(step, 2) + '"></div></div>' +
+            '<div class="' + dot(step, 3) + '"></div>' +
+            '<div class="rail__bar"><div class="' + bar(step, 3) + '"></div></div>' +
+            '<div class="' + dot(step, 4) + '"></div>' +
+          '</div>' +
+          '<div class="rail-labels">' +
+            '<span>Received</span><span>Preparing</span><span>Ready</span><span>Done</span>' +
+          '</div>' +
+
+          '<div class="lines">' +
+            selO.lines.map(function (ln) {
+              return '<div class="lines__row"><span>' + A.esc(ln.n) + '</span><span>' + A.esc(ln.p) + '</span></div>';
+            }).join('') +
+            '<div class="lines__total"><span>Total</span><span>' + A.esc(selO.amt) + '</span></div>' +
+          '</div>' +
+
+          '<button class="btn-orange-wide' + (done ? ' btn-advance--done' : '') + '" data-adv="1">' +
+            (done ? 'Order completed &#10003;' : 'Advance to ' + SEQ[step]) +
+          '</button>' +
+        '</div>' : '') +
+
+      '</div>';
+
+    A.bindOnce(host, 'click', function (e) {
+      if (e.target.closest('[data-close]')) {
+        A.setState({ selOrder: -1 });
+        return;
+      }
+      if (e.target.closest('[data-adv]')) {
+        var i = A.state.selOrder;
+        if (i < 0) { return; }
+        var st = A.state.statuses.slice();
+        var cur = SEQ.indexOf(st[i]);
+        if (cur < 3) {
+          st[i] = SEQ[cur + 1];
+          A.setState({ statuses: st });
+        }
+        return;
+      }
+      var row = e.target.closest('.order-row');
+      if (row) { A.setState({ selOrder: +row.dataset.i }); }
     });
   };
 }(APP));
