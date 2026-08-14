@@ -426,6 +426,112 @@ var APP = (function (D) {
 }(APP));
 
 /* ==========================================================================
+   View 3 - Products
+   ========================================================================== */
+
+(function (A) {
+  'use strict';
+
+  var D = A.D;
+
+  function toggle(on, attrs) {
+    return '<div class="toggle' + (on ? ' toggle--on' : '') + '" ' + attrs + '>' +
+             '<div class="toggle__knob"></div>' +
+           '</div>';
+  }
+
+  A.VIEWS.products = function (s, host) {
+    /* the design binds the edit panel to PRODUCTS[1] and shows a bare price */
+    var ep = D.PRODUCTS[1];
+
+    host.innerHTML =
+      '<div class="split-layout">' +
+
+        '<div class="split-layout__main">' +
+          '<div class="products-bar">' +
+            '<div class="products-bar__count">18 products &middot; edits publish straight to the PWA menu</div>' +
+            '<button class="btn-maroon">+ New product</button>' +
+          '</div>' +
+          D.PRODUCTS.map(function (p, i) {
+            return '<div class="product-row">' +
+                     '<div class="product-row__thumb" style="background:linear-gradient(160deg,' + p.c1 + ',' + p.c2 + ')"></div>' +
+                     '<div>' +
+                       '<div class="product-row__name">' + A.esc(p.n) + '</div>' +
+                       '<div class="product-row__tag">' + A.esc(p.tag) + '</div>' +
+                     '</div>' +
+                     '<div class="product-row__cat">' + A.esc(p.cat) + '</div>' +
+                     '<div class="product-row__price">' + A.esc(p.pr) + '</div>' +
+                     toggle(s.avail[i], 'data-avail="' + i + '"') +
+                     '<div class="product-row__edit" data-edit="' + i + '">Edit</div>' +
+                   '</div>';
+          }).join('') +
+        '</div>' +
+
+        '<div class="panel panel--edit">' +
+          '<div class="panel__title">Edit product</div>' +
+          '<div class="edit__photo" style="background:linear-gradient(160deg,' + ep.c1 + ',' + ep.c2 + ')">' +
+            '<div class="edit__replace">Replace photo</div>' +
+          '</div>' +
+
+          '<div class="edit__section">NAME</div>' +
+          '<input class="field-input" value="' + A.esc(ep.n) + '" readonly>' +
+
+          '<div class="edit__pair">' +
+            '<div>' +
+              '<div class="field-label">PRICE (RM)</div>' +
+              '<input class="field-input" value="12.90" readonly>' +
+            '</div>' +
+            '<div>' +
+              '<div class="field-label">CATEGORY</div>' +
+              '<input class="field-input" value="' + A.esc(ep.cat) + '" readonly>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="edit__section">CUSTOMIZATION GROUPS</div>' +
+          '<div class="group-chips">' +
+            '<div class="group-chip">Size</div>' +
+            '<div class="group-chip">Sugar level</div>' +
+            '<div class="group-chip">Milk</div>' +
+            '<div class="group-chip">Add-ons</div>' +
+            '<div class="group-chip group-chip--add">+ Group</div>' +
+          '</div>' +
+
+          '<div class="edit__section">AVAILABLE AT</div>' +
+          '<div class="outlet-toggles">' +
+            D.OUTLETS.map(function (o, i) {
+              return '<div class="outlet-toggles__row">' +
+                       '<span>' + A.esc(o.n.replace('Getta Coffee ', '')) + '</span>' +
+                       toggle(s.epo[i], 'data-epo="' + i + '"') +
+                     '</div>';
+            }).join('') +
+          '</div>' +
+
+          '<button class="btn-orange-wide">Publish to PWA</button>' +
+        '</div>' +
+
+      '</div>';
+
+    A.bindOnce(host, 'click', function (e) {
+      var av = e.target.closest('[data-avail]');
+      if (av) {
+        var a = A.state.avail.slice();
+        var i = +av.dataset.avail;
+        a[i] = !a[i];
+        A.setState({ avail: a });
+        return;
+      }
+      var eo = e.target.closest('[data-epo]');
+      if (eo) {
+        var b = A.state.epo.slice();
+        var j = +eo.dataset.epo;
+        b[j] = !b[j];
+        A.setState({ epo: b });
+      }
+    });
+  };
+}(APP));
+
+/* ==========================================================================
    Views are appended below this line, one section per sidebar entry.
    ========================================================================== */
 
