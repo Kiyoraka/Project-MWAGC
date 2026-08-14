@@ -442,3 +442,299 @@
   font-weight: 600;
   line-height: 1.45;
 }
+
+/* ==========================================================================
+   View 1 - Dashboard
+   ========================================================================== */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.stat {
+  background: var(--white);
+  border-radius: 18px;
+  padding: 18px 20px;
+  box-shadow: var(--sh-card);
+}
+
+.stat--primary {
+  background: var(--maroon);
+  box-shadow: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat__bolt {
+  position: absolute;
+  right: -8px;
+  bottom: -10px;
+  opacity: .2;
+}
+
+.stat__label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: .5px;
+}
+
+.stat--primary .stat__label {
+  color: var(--on-maroon-dim);
+}
+
+.stat__value {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 28px;
+  margin-top: 4px;
+}
+
+.stat--primary .stat__value {
+  color: var(--cream);
+}
+
+.stat__value--sm {
+  font-size: 19px;
+  margin-top: 8px;
+  color: var(--maroon);
+}
+
+.stat__delta {
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 2px;
+  color: var(--success);
+}
+
+.stat--primary .stat__delta {
+  color: var(--tan);
+}
+
+.stat__delta--orange {
+  color: var(--orange-text);
+}
+
+/* --- lower grid ---------------------------------------------------------- */
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 380px;
+  gap: 14px;
+  margin-top: 14px;
+  align-items: start;
+}
+
+.dash-grid__wide {
+  grid-column: span 2;
+  background: var(--white);
+  border-radius: 18px;
+  padding: 18px 20px;
+  box-shadow: var(--sh-card);
+}
+
+.dash-grid__tall {
+  grid-row: span 2;
+  background: var(--white);
+  border-radius: 18px;
+  padding: 18px 20px;
+  box-shadow: var(--sh-card);
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* --- range chips --------------------------------------------------------- */
+
+.range {
+  display: flex;
+  background: var(--cream);
+  border-radius: var(--r-pill);
+  padding: 3px;
+}
+
+.range-chip {
+  padding: 7px 15px;
+  border-radius: var(--r-pill);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 11.5px;
+  transition: all var(--t-quick);
+  background: transparent;
+  color: var(--muted);
+}
+
+.range-chip--on {
+  background: var(--maroon);
+  color: var(--cream);
+}
+
+/* --- chart --------------------------------------------------------------- */
+
+.chart {
+  margin-top: 10px;
+}
+
+.chart-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10.5px;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 0 4px;
+}
+
+/* --- live feed ----------------------------------------------------------- */
+
+.live {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--success);
+}
+
+.live__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+}
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.feed__row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  background: var(--white);
+  border-radius: 13px;
+  padding: 9px 11px;
+  box-shadow: inset 0 0 0 1.5px var(--line-mid);
+}
+
+.feed__row--fresh {
+  animation: feedIn .8s ease-out both;
+}
+
+.feed__avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 12px;
+  color: var(--maroon);
+  flex: none;
+}
+
+.feed__mid {
+  flex: 1;
+  min-width: 0;
+}
+
+.feed__who {
+  font-weight: 700;
+  font-size: 12.5px;
+}
+
+.feed__items {
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.feed__right {
+  text-align: right;
+  flex: none;
+}
+
+.feed__amt {
+  font-weight: 800;
+  font-size: 12.5px;
+  color: var(--maroon);
+}
+
+.feed__type {
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* --- pickup vs delivery -------------------------------------------------- */
+
+.split {
+  grid-column: span 2;
+  background: var(--white);
+  border-radius: 18px;
+  padding: 18px 20px;
+  box-shadow: var(--sh-card);
+  display: flex;
+  gap: 26px;
+  align-items: center;
+}
+
+.split__body {
+  flex: 1;
+}
+
+.split__legend {
+  display: flex;
+  gap: 22px;
+  margin-top: 12px;
+}
+
+.split__key {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--body);
+}
+
+.split__swatch {
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+}
+
+.split__swatch--pickup   { background: var(--maroon); }
+.split__swatch--delivery { background: var(--sand); }
+
+.split__count {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 21px;
+  margin-top: 3px;
+}
+
+.split__count span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.split__note {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 10px;
+}

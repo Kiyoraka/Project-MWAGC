@@ -165,6 +165,145 @@ var APP = (function (D) {
 }(GETTA));
 
 /* ==========================================================================
+   View 1 - Dashboard
+   ========================================================================== */
+
+(function (A) {
+  'use strict';
+
+  var D = A.D;
+  var BOLT = 'M13 2 3 14h6l-2 8 10-12h-6l2-8z';
+
+  /* chart geometry, lifted from the design component */
+  function chartPoints(data) {
+    var mx = Math.max.apply(null, data);
+    var mn = Math.min.apply(null, data);
+    return data.map(function (v, i) {
+      return (i * (640 / (data.length - 1))).toFixed(1) + ',' +
+             (195 - ((v - mn) / (mx - mn)) * 175 + 8).toFixed(1);
+    }).join(' ');
+  }
+
+  A.VIEWS.dash = function (s, host) {
+    var pts  = chartPoints(s.range === 7 ? D.D7 : D.D30);
+    var fill = '0,210 ' + pts + ' 640,210';
+
+    host.innerHTML =
+      '<div class="stats">' +
+        '<div class="stat stat--primary">' +
+          '<svg class="stat__bolt" width="64" height="64" viewBox="0 0 24 24"><path d="' + BOLT + '" fill="#EE7623"></path></svg>' +
+          '<div class="stat__label">TODAY\'S SALES</div>' +
+          '<div class="stat__value">RM 4,286</div>' +
+          '<div class="stat__delta">&#9650; 12% vs yesterday</div>' +
+        '</div>' +
+        '<div class="stat">' +
+          '<div class="stat__label">ORDERS TODAY</div>' +
+          '<div class="stat__value">186</div>' +
+          '<div class="stat__delta">&#9650; 23 in the last hour</div>' +
+        '</div>' +
+        '<div class="stat">' +
+          '<div class="stat__label">ACTIVE CUSTOMERS</div>' +
+          '<div class="stat__value">1,204</div>' +
+          '<div class="stat__delta">&#9650; 48 new this week</div>' +
+        '</div>' +
+        '<div class="stat">' +
+          '<div class="stat__label">TOP PRODUCT</div>' +
+          '<div class="stat__value stat__value--sm">Gula Melaka Latte</div>' +
+          '<div class="stat__delta stat__delta--orange">341 cups this week</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="dash-grid">' +
+
+        /* sales trend */
+        '<div class="dash-grid__wide">' +
+          '<div class="card-head">' +
+            '<div class="card__title">Sales trend</div>' +
+            '<div class="range">' +
+              '<button class="range-chip' + (s.range === 7 ? ' range-chip--on' : '') + '" data-r="7">7 days</button>' +
+              '<button class="range-chip' + (s.range === 30 ? ' range-chip--on' : '') + '" data-r="30">30 days</button>' +
+            '</div>' +
+          '</div>' +
+          '<svg class="chart" width="100%" height="210" viewBox="0 0 640 210" preserveAspectRatio="none">' +
+            '<line x1="0" y1="52" x2="640" y2="52" stroke="#F4EDDC" stroke-width="1"></line>' +
+            '<line x1="0" y1="104" x2="640" y2="104" stroke="#F4EDDC" stroke-width="1"></line>' +
+            '<line x1="0" y1="156" x2="640" y2="156" stroke="#F4EDDC" stroke-width="1"></line>' +
+            '<polyline points="' + pts + '" fill="none" stroke="#EE7623" stroke-width="3.5" ' +
+              'stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" ' +
+              'style="stroke-dashoffset:' + (s.chartOn ? 0 : 1) + ';transition:stroke-dashoffset 1.3s ease-out"></polyline>' +
+            '<polygon points="' + fill + '" fill="rgba(238,118,35,.12)"></polygon>' +
+          '</svg>' +
+          '<div class="chart-labels">' +
+            '<span>' + (s.range === 7 ? 'Thu 7 Aug' : '15 Jul') + '</span>' +
+            '<span>' + (s.range === 7 ? 'Sun 10 Aug' : '30 Jul') + '</span>' +
+            '<span>Today</span>' +
+          '</div>' +
+        '</div>' +
+
+        /* live orders */
+        '<div class="dash-grid__tall">' +
+          '<div class="card-head">' +
+            '<div class="card__title">Live orders</div>' +
+            '<div class="live"><div class="live__dot"></div>LIVE</div>' +
+          '</div>' +
+          '<div class="feed">' +
+            s.feed.map(function (f) {
+              return '<div class="feed__row' + (f.fresh ? ' feed__row--fresh' : '') + '">' +
+                       '<div class="feed__avatar">' + A.esc(A.initials(f.who)) + '</div>' +
+                       '<div class="feed__mid">' +
+                         '<div class="feed__who">' + A.esc(f.who) + '</div>' +
+                         '<div class="feed__items">' + A.esc(f.items) + '</div>' +
+                       '</div>' +
+                       '<div class="feed__right">' +
+                         '<div class="feed__amt">' + A.esc(f.amt) + '</div>' +
+                         '<div class="feed__type">' + A.esc(f.type) + '</div>' +
+                       '</div>' +
+                     '</div>';
+            }).join('') +
+          '</div>' +
+        '</div>' +
+
+        /* pickup vs delivery */
+        '<div class="split">' +
+          '<svg width="150" height="150" viewBox="0 0 120 120">' +
+            '<circle cx="60" cy="60" r="46" fill="none" stroke="#F0E4C6" stroke-width="17"></circle>' +
+            '<circle cx="60" cy="60" r="46" fill="none" stroke="#7A2418" stroke-width="17" pathLength="100" ' +
+              'transform="rotate(-90 60 60)" ' +
+              'style="stroke-dasharray:' + (s.chartOn ? '64 100' : '0 100') + ';transition:stroke-dasharray 1.2s ease-out"></circle>' +
+            '<text x="60" y="57" text-anchor="middle" fill="#2B1510" ' +
+              'style="font-family:\'Baloo 2\',sans-serif;font-weight:800;font-size:20px">64%</text>' +
+            '<text x="60" y="74" text-anchor="middle" fill="#8A6A55" ' +
+              'style="font-family:Outfit,sans-serif;font-weight:600;font-size:9px">PICKUP</text>' +
+          '</svg>' +
+          '<div class="split__body">' +
+            '<div class="card__title">Pickup vs Delivery</div>' +
+            '<div class="split__legend">' +
+              '<div>' +
+                '<div class="split__key"><div class="split__swatch split__swatch--pickup"></div>Pickup</div>' +
+                '<div class="split__count">119 <span>orders</span></div>' +
+              '</div>' +
+              '<div>' +
+                '<div class="split__key"><div class="split__swatch split__swatch--delivery"></div>Delivery</div>' +
+                '<div class="split__count">67 <span>orders</span></div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="split__note">Pickup keeps climbing since the queue-skip campaign &mdash; consider a bolt-points boost for delivery.</div>' +
+          '</div>' +
+        '</div>' +
+
+      '</div>';
+
+    /* range switch re-arms the chart draw-in, exactly as the design does */
+    host.querySelector('.range').addEventListener('click', function (e) {
+      var b = e.target.closest('.range-chip');
+      if (!b) { return; }
+      A.setState({ range: +b.dataset.r, chartOn: false });
+      A.later(function () { A.setState({ chartOn: true }); }, 60);
+    });
+  };
+}(APP));
+
+/* ==========================================================================
    Views are appended below this line, one section per sidebar entry.
    ========================================================================== */
 
