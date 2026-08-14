@@ -88,6 +88,7 @@ var APP = (function (D) {
   /* --- view registry ------------------------------------------------------ */
 
   var VIEWS = {};
+  var lastView = null;
 
   function render() {
     // sidebar
@@ -113,6 +114,19 @@ var APP = (function (D) {
         host.hidden = true;
       }
     });
+
+    /* The design mounts a fresh element per view, so secIn plays on every
+       switch. Our host persists, so replay it manually - but ONLY on an actual
+       view change, never on the 4.5s feed tick, which would strobe the page. */
+    if (lastView !== state.view) {
+      lastView = state.view;
+      var active = el('view-' + state.view);
+      if (active) {
+        active.style.animation = 'none';
+        void active.offsetWidth;          // force reflow so the restart takes
+        active.style.animation = '';
+      }
+    }
   }
 
   /* --- navigation --------------------------------------------------------- */
@@ -322,6 +336,7 @@ var APP = (function (D) {
 
   var D = A.D;
   var SEQ = ['New', 'Preparing', 'Ready', 'Completed'];
+  var wasOpen = false;   // so advancing a status does not replay the slide-in
 
   var CHIP = {
     New:       'chip--new',
@@ -347,6 +362,8 @@ var APP = (function (D) {
     var status = open ? s.statuses[s.selOrder] : 'New';
     var step   = SEQ.indexOf(status) + 1;
     var done   = status === 'Completed';
+    var enter  = open && !wasOpen;
+    wasOpen = open;
 
     host.innerHTML =
       '<div class="split-layout">' +
@@ -370,7 +387,7 @@ var APP = (function (D) {
         '</div>' +
 
         (open ?
-        '<div class="panel panel--order">' +
+        '<div class="panel panel--order' + (enter ? ' panel--enter' : '') + '">' +
           '<div class="card-head">' +
             '<div class="panel__id">' + A.esc(selO.id) + '</div>' +
             '<button class="panel__close" data-close="1">&#10005;</button>' +
@@ -829,6 +846,8 @@ var APP = (function (D) {
 
   var D = A.D;
 
+  var wasOpen = false;   // panel slides in on open only, not on every re-render
+
   var TIER = {
     'Gold Bolt': 'tier--gold',
     'Easy Goer': 'tier--easy',
@@ -838,6 +857,8 @@ var APP = (function (D) {
   A.VIEWS.customers = function (s, host) {
     var open = s.selCust >= 0;
     var sel  = D.CUST[Math.max(0, s.selCust)];
+    var enter = open && !wasOpen;
+    wasOpen = open;
 
     host.innerHTML =
       '<div class="split-layout">' +
@@ -864,7 +885,7 @@ var APP = (function (D) {
         '</div>' +
 
         (open ?
-        '<div class="panel panel--cust">' +
+        '<div class="panel panel--cust' + (enter ? ' panel--enter' : '') + '">' +
           '<div class="card-head">' +
             '<div class="cust-panel__head">' +
               '<div class="cust-avatar cust-avatar--lg">' + A.esc(A.initials(sel.n)) + '</div>' +

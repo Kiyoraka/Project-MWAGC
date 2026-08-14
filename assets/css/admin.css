@@ -234,13 +234,19 @@
   box-shadow: var(--sh-card);
 }
 
-/* floating side panel - orders, products, customers */
+/* floating side panel - orders, products, customers.
+   panelIn is applied via the --enter modifier ONLY on the closed-to-open
+   transition; re-rendering an already-open panel (advancing an order status,
+   toggling an outlet) must not replay the slide-in. */
 .panel {
   background: var(--white);
   border-radius: 18px;
   box-shadow: var(--sh-panel);
   padding: 20px;
   flex: none;
+}
+
+.panel--enter {
   animation: panelIn .25s ease-out;
 }
 
