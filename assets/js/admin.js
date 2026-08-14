@@ -70,8 +70,9 @@ var APP = (function (D) {
   /* View hosts survive re-renders, so a listener attached on every render would
      stack up and fire N times. Bind delegated handlers through this instead. */
   function bindOnce(host, type, fn) {
-    if (host.dataset.bound === '1') { return; }
-    host.dataset.bound = '1';
+    var flag = 'bound' + type;          // per event type - a view may bind several
+    if (host.dataset[flag] === '1') { return; }
+    host.dataset[flag] = '1';
     host.addEventListener(type, fn);
   }
 
@@ -527,6 +528,88 @@ var APP = (function (D) {
         b[j] = !b[j];
         A.setState({ epo: b });
       }
+    });
+  };
+}(APP));
+
+/* ==========================================================================
+   View 4 - Categories
+   ========================================================================== */
+
+(function (A) {
+  'use strict';
+
+  var D = A.D;
+  var GRIP = 'M8 5a2 2 0 1 0 .01 0zM16 5a2 2 0 1 0 .01 0zM8 11a2 2 0 1 0 .01 0z' +
+             'M16 11a2 2 0 1 0 .01 0zM8 17a2 2 0 1 0 .01 0zM16 17a2 2 0 1 0 .01 0z';
+
+  A.VIEWS.cats = function (s, host) {
+    var rows = s.cats.map(function (ci, pos) {
+      return { i: ci, c: D.CATLIST[ci], pos: pos + 1 };
+    });
+
+    host.innerHTML =
+      '<div class="cats-layout">' +
+
+        '<div class="cats-layout__main">' +
+          '<div class="card__title">Category rail order</div>' +
+          '<div class="card__subtitle">Drag rows to reorder &mdash; this is exactly what the PWA left rail shows.</div>' +
+          '<div class="cat-rows">' +
+            rows.map(function (r) {
+              return '<div class="cat-row' + (s.dragFrom === r.i ? ' cat-row--dragging' : '') + '" ' +
+                        'draggable="true" data-i="' + r.i + '">' +
+                       '<svg width="14" height="14" viewBox="0 0 24 24"><path d="' + GRIP + '" fill="#B9A48C"></path></svg>' +
+                       '<div class="cat-row__icon">' +
+                         '<svg width="16" height="16" viewBox="0 0 24 24"><path d="' + r.c.ic + '" fill="#7A2418" fill-rule="evenodd"></path></svg>' +
+                       '</div>' +
+                       '<div class="cat-row__name">' + A.esc(r.c.n) + '</div>' +
+                       '<div class="cat-row__count">' + r.c.count + ' products</div>' +
+                       '<div class="cat-row__pos">' + r.pos + '</div>' +
+                     '</div>';
+            }).join('') +
+          '</div>' +
+        '</div>' +
+
+        '<div class="rail-preview">' +
+          '<div class="rail-preview__label">PWA RAIL PREVIEW</div>' +
+          '<div class="rail-preview__strip">' +
+            rows.map(function (r, idx) {
+              return '<div class="rail-preview__item' + (idx === 0 ? ' rail-preview__item--first' : '') + '">' +
+                       '<svg width="17" height="17" viewBox="0 0 24 24"><path d="' + r.c.ic + '" fill="#7A2418" fill-rule="evenodd"></path></svg>' +
+                       '<div class="rail-preview__name">' + A.esc(r.c.n) + '</div>' +
+                     '</div>';
+            }).join('') +
+          '</div>' +
+        '</div>' +
+
+      '</div>';
+
+    A.bindOnce(host, 'dragstart', function (e) {
+      var row = e.target.closest('.cat-row');
+      if (!row) { return; }
+      e.dataTransfer.effectAllowed = 'move';
+      A.setState({ dragFrom: +row.dataset.i });
+    });
+
+    /* reorder algorithm copied from the design component, splice for splice */
+    A.bindOnce(host, 'dragover', function (e) {
+      var row = e.target.closest('.cat-row');
+      if (!row) { return; }
+      e.preventDefault();
+      var over = +row.dataset.i;
+      var from = A.state.dragFrom;
+      if (from < 0 || from === over) { return; }
+
+      var arr = A.state.cats.slice();
+      var fi = arr.indexOf(from);
+      arr.splice(fi, 1);
+      var oi = arr.indexOf(over);
+      arr.splice(oi + (fi <= oi ? 1 : 0), 0, from);
+      A.setState({ cats: arr });
+    });
+
+    A.bindOnce(host, 'dragend', function () {
+      A.setState({ dragFrom: -1 });
     });
   };
 }(APP));
