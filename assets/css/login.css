@@ -1,0 +1,330 @@
+/* ==========================================================================
+   Getta Coffee - Login
+   Composed entirely from tokens.css. There is no login screen in the Claude
+   Design project, so this page borrows the console's own vocabulary: maroon
+   panel + cream content, Baloo 2 display, pill CTAs with a 3D press shadow,
+   and the bolt that always strikes top-right to bottom-left.
+   ========================================================================== */
+
+.login-body {
+  background: var(--offwhite);
+}
+
+.login {
+  min-height: 100vh;
+  display: flex;
+}
+
+/* ==========================================================================
+   Left - brand panel
+   ========================================================================== */
+
+.login__brand {
+  width: 44%;
+  max-width: 620px;
+  flex: none;
+  background: var(--maroon);
+  color: var(--cream);
+  padding: 54px 56px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+/* oversized bolt watermark bleeding off the bottom-right corner */
+.login__watermark {
+  position: absolute;
+  right: -120px;
+  bottom: -90px;
+  width: 460px;
+  height: 460px;
+  opacity: .06;
+  pointer-events: none;
+}
+
+.login__brand-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.login__mark {
+  display: inline-block;
+  animation: demoBolt .55s .15s both;
+}
+
+.login__wordmark {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 44px;
+  line-height: 1.02;
+  letter-spacing: 1px;
+  color: var(--cream);
+  margin-top: 22px;
+}
+
+.login__overline {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2.4px;
+  color: var(--tan);
+  margin-top: 8px;
+}
+
+.login__tagline {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--cream);
+  margin-top: 40px;
+}
+
+.login__blurb {
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.55;
+  color: var(--on-maroon-dim);
+  margin-top: 8px;
+  max-width: 330px;
+}
+
+.login__deploy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(43, 21, 16, .35);
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--on-maroon-dim);
+}
+
+/* ==========================================================================
+   Right - sign-in card
+   ========================================================================== */
+
+.login__panel {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+
+.login__card {
+  width: 396px;
+  max-width: 100%;
+  background: var(--white);
+  border-radius: var(--r-tile);
+  box-shadow: var(--sh-frame);
+  padding: 38px 36px 32px;
+  box-sizing: border-box;
+  animation: fadeUp .4s ease-out both;
+}
+
+.login__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 26px;
+  color: var(--dark);
+}
+
+.login__subtitle {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.login__label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  color: var(--muted);
+  margin-top: 22px;
+}
+
+.login__input {
+  width: 100%;
+  margin-top: 6px;
+  padding: 12px 14px;
+  border-radius: var(--r-input);
+  border: 1.5px solid var(--line);
+  background: var(--offwhite);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--dark);
+  transition: border-color var(--t-quick) ease-out,
+              box-shadow var(--t-quick) ease-out;
+}
+
+.login__input::placeholder {
+  color: var(--faint);
+  font-weight: 500;
+}
+
+.login__input:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(238, 118, 35, .16);
+}
+
+.login__input.is-invalid {
+  border-color: var(--danger);
+}
+
+/* password field wraps the input so the reveal button can sit inside it */
+.login__field {
+  position: relative;
+}
+
+.login__reveal {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-top: 3px;              /* offsets the input's own margin-top:6px */
+  border: none;
+  background: var(--cream);
+  color: var(--maroon);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  cursor: pointer;
+}
+
+.login__reveal:hover {
+  background: var(--sand);
+}
+
+.login__error {
+  margin-top: 12px;
+  background: #FBEAE8;
+  border-radius: var(--r-input);
+  padding: 10px 13px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--danger);
+  animation: fadeUp .2s ease-out both;
+}
+
+.login__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.login__remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--body);
+  cursor: pointer;
+  user-select: none;
+}
+
+.login__remember input {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--maroon);
+  cursor: pointer;
+}
+
+.login__forgot {
+  font-size: 12.5px;
+  color: var(--orange-text);   /* AA-safe orange - this is small text */
+}
+
+.login__cta {
+  width: 100%;
+  margin-top: 22px;
+  padding: 14px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--orange);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 var(--orange-press);
+  transition: transform var(--t-quick) ease-out,
+              box-shadow var(--t-quick) ease-out;
+}
+
+.login__cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 0 var(--orange-press);
+}
+
+/* press the button into the page - the signage feel */
+.login__cta:active {
+  transform: translateY(5px);
+  box-shadow: 0 0 0 var(--orange-press);
+}
+
+.login__note {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--faint);
+}
+
+/* ==========================================================================
+   Responsive - stack the panels
+   ========================================================================== */
+
+@media (max-width: 860px) {
+  .login {
+    flex-direction: column;
+  }
+
+  .login__brand {
+    width: 100%;
+    max-width: none;
+    padding: 34px 28px 30px;
+  }
+
+  .login__watermark {
+    right: -80px;
+    bottom: -140px;
+    width: 320px;
+    height: 320px;
+  }
+
+  .login__wordmark {
+    font-size: 34px;
+    margin-top: 16px;
+  }
+
+  .login__tagline {
+    font-size: 19px;
+    margin-top: 22px;
+  }
+
+  .login__blurb {
+    max-width: none;
+  }
+
+  .login__deploy {
+    display: none;
+  }
+
+  .login__panel {
+    padding: 28px 20px 44px;
+  }
+}
