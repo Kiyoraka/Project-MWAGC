@@ -104,17 +104,31 @@
   border-left-color: var(--orange);
 }
 
-.sidebar__deploy {
+/* Sits in the sidebar footer slot the DigitalOcean chip used to occupy. */
+.sidebar__signout {
   display: flex;
   gap: 10px;
   align-items: center;
+  width: 100%;
   padding: 12px 10px;
+  border: none;
   border-radius: 12px;
   background: rgba(43, 21, 16, .35);
-  font-size: 10.5px;
-  font-weight: 600;
-  line-height: 1.35;
-  color: var(--on-maroon-dim);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--t-quick);
+}
+
+.sidebar__signout:hover {
+  background: rgba(43, 21, 16, .55);
+}
+
+.sidebar__signout:active {
+  background: rgba(43, 21, 16, .7);
 }
 
 /* ==========================================================================
@@ -164,7 +178,6 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  cursor: pointer;
 }
 
 .topbar__avatar {

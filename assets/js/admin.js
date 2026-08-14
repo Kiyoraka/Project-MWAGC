@@ -125,7 +125,7 @@ var APP = (function (D) {
     if (v === 'dash') { later(function () { setState({ chartOn: true }); }, 250); }
   });
 
-  /* --- sign out (bound to the existing user block) ------------------------ */
+  /* --- sign out (sidebar footer button) ----------------------------------- */
 
   el('signout').addEventListener('click', function () {
     sessionStorage.removeItem(SESSION_KEY);

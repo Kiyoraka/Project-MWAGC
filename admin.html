@@ -35,12 +35,12 @@
       <!-- nav items rendered by admin.js from GETTA.NAV -->
       <div class="sidebar__nav" id="nav"></div>
 
-      <div class="sidebar__deploy">
-        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M13 2 3 14h6l-2 8 10-12h-6l2-8z" fill="#EE7623"></path>
+      <button class="sidebar__signout" id="signout" type="button">
+        <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 3h9v2H6v14h7v2H4V3zm10 5 5 4-5 4v-3H9v-2h5V8z" fill="#EE7623"></path>
         </svg>
-        <div>Deployed on DigitalOcean<br>App Platform &middot; v2.4.1</div>
-      </div>
+        <span>Sign out</span>
+      </button>
     </div>
 
     <!-- ── Main column ─────────────────────────────────────────────────── -->
@@ -59,8 +59,7 @@
           </svg>
         </div>
 
-        <!-- clicking the user block signs out - no extra UI, design untouched -->
-        <div class="topbar__user" id="signout" title="Sign out">
+        <div class="topbar__user">
           <div class="topbar__avatar">NH</div>
           <div>
             <div class="topbar__name">Nurul Huda</div>
