@@ -910,7 +910,80 @@ var APP = (function (D) {
 }(APP));
 
 /* ==========================================================================
-   Views are appended below this line, one section per sidebar entry.
+   View 9 - Settings
+   ========================================================================== */
+
+(function (A) {
+  'use strict';
+
+  var TOKENS = [
+    { label: 'PRIMARY / MAROON',   hex: '#7A2418' },
+    { label: 'SECONDARY / ORANGE', hex: '#EE7623' },
+    { label: 'SURFACE / CREAM',    hex: '#F7F1DC', bordered: true },
+    { label: 'TEXT / DARK ROAST',  hex: '#2B1510' }
+  ];
+
+  var PAYMENTS = [
+    { n: 'Getta Wallet',          state: 'ENABLED',     on: true },
+    { n: 'FPX Online Banking',    state: 'ENABLED',     on: true },
+    { n: 'Cards (Visa / Master)', state: 'CONFIGURE' },
+    { n: 'TNG eWallet',           state: 'COMING SOON', soon: true }
+  ];
+
+  A.VIEWS.settings = function (s, host) {
+    host.innerHTML =
+      '<div class="settings-layout">' +
+
+        '<div class="settings-card">' +
+          '<div class="card__title">Brand theme tokens</div>' +
+          '<div class="card__subtitle">These flow into both the PWA and this console.</div>' +
+
+          '<div class="token-grid">' +
+            TOKENS.map(function (t) {
+              return '<div class="token-row">' +
+                       '<div class="token-row__swatch' + (t.bordered ? ' token-row__swatch--bordered' : '') + '" ' +
+                            'style="background:' + t.hex + '"></div>' +
+                       '<div>' +
+                         '<div class="token-row__label">' + t.label + '</div>' +
+                         '<div class="token-row__hex">' + t.hex + '</div>' +
+                       '</div>' +
+                     '</div>';
+            }).join('') +
+          '</div>' +
+
+          '<div class="settings-section">LOGO</div>' +
+          '<div class="logo-drop">' +
+            '<svg width="46" height="46" viewBox="0 0 140 140">' +
+              '<rect width="140" height="140" rx="28" fill="#7A2418"></rect>' +
+              '<path d="M70 24 C45 24 26 43 26 68 c0 25 19 44 44 44 h27 c4 0 7-3 7-7 V84 c7-2 11-8 11-15 0-9-7-16-16-16h-3 C92 37 82 24 70 24z" fill="#F7F1DC"></path>' +
+              '<path d="M76 34 58 66h13l-6 36 26-42H78l8-26z" fill="#7A2418"></path>' +
+            '</svg>' +
+            '<div>' +
+              '<div class="logo-drop__name">getta-mark.svg</div>' +
+              '<div class="logo-drop__hint">Drop a new file or <span class="logo-drop__browse">browse</span></div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="settings-card">' +
+          '<div class="card__title">Payments</div>' +
+          '<div class="pay-list">' +
+            PAYMENTS.map(function (p) {
+              return '<div class="pay-row' + (p.soon ? ' pay-row--soon' : '') + '">' +
+                       '<div class="pay-row__name">' + A.esc(p.n) + '</div>' +
+                       '<div class="pay-row__state' + (p.on ? ' pay-row__state--on' : '') + '">' + p.state + '</div>' +
+                     '</div>';
+            }).join('') +
+          '</div>' +
+          '<div class="notice settings-note">Payment gateway keys live in DigitalOcean App Platform env vars &mdash; placeholder config only in this mockup.</div>' +
+        '</div>' +
+
+      '</div>';
+  };
+}(APP));
+
+/* ==========================================================================
+   All nine views registered. Boot last.
    ========================================================================== */
 
 APP.boot();
